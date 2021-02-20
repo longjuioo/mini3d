@@ -379,6 +379,7 @@ void device_draw_line(device_t *device, int x1, int y1, int x2, int y2, IUINT32 
 	}
 }
 
+
 // 根据坐标读取纹理
 IUINT32 device_texture_read(const device_t *device, float u, float v) {
 	int x, y;
@@ -676,15 +677,17 @@ void camera_at_zero(device_t *device, float x, float y, float z) {
 }
 
 void init_texture(device_t *device) {
-	static IUINT32 texture[256][256];
+	int tex_width = 512;
+	int tex_height = 512;
+	static IUINT32 texture[512][512];
 	int i, j;
-	for (j = 0; j < 256; j++) {
-		for (i = 0; i < 256; i++) {
+	for (j = 0; j < tex_width; j++) {
+		for (i = 0; i < tex_height; i++) {
 			int x = i / 32, y = j / 32;
-			texture[j][i] = ((x + y) & 1)? 0xffffff : 0x3fbcef;
+			texture[j][i] = ((x + y) & 1)? 0xffffff : 0xef3f4b;
 		}
 	}
-	device_set_texture(device, texture, 256 * 4, 256, 256);
+	device_set_texture(device, texture, 512 * 4, tex_width, tex_height);
 }
 
 const int WIDTH = 640;
@@ -721,10 +724,10 @@ int main(void)
 		device_clear(&device, 1);
 		camera_at_zero(&device, pos, 0, 0);
 		
-		if (screen_keys[VK_UP]) pos -= VK_SENSE;
-		if (screen_keys[VK_DOWN]) pos += VK_SENSE;
-		if (screen_keys[VK_LEFT]) alpha += VK_SENSE;
-		if (screen_keys[VK_RIGHT]) alpha -= VK_SENSE;
+		if (screen_keys[VK_UP] || screen_keys[87]) pos -= VK_SENSE;
+		if (screen_keys[VK_DOWN] || screen_keys[83]) pos += VK_SENSE;
+		if (screen_keys[VK_LEFT] || screen_keys[65]) alpha += VK_SENSE;
+		if (screen_keys[VK_RIGHT] || screen_keys[68]) alpha -= VK_SENSE;
 
 		if (screen_keys[VK_SPACE]) {
 			if (kbhit == 0) {
