@@ -3,4 +3,7 @@
   <ItemGroup>
     <ClCompile Include="mini3d.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="vector.h" />
+  </ItemGroup>
 </Project>
